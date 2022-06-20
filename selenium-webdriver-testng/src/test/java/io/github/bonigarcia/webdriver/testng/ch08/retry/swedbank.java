@@ -37,7 +37,7 @@ public class swedbank {
                 "https://www.swedbank.ee/private/credit/loans/newSmall?language=EST");
 
                 driver.manage().window().maximize();
-                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
                 WebElement cookies_accept_button = driver.findElement(By.xpath("//button[text()='Nõustun kõigi küpsistega']"));
                 wait.until(ExpectedConditions.elementToBeClickable(cookies_accept_button)).click();
 
@@ -52,12 +52,12 @@ public class swedbank {
                 driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
                 
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-                wait.until(ExpectedConditions.elementToBeClickable(By.id("small-loan-calculator"))).click();
-                driver.findElement(By.xpath("//input[contains(@aria-label, 'Väärtus')]")).click();
-                driver.findElement(By.xpath("//input[contains(@aria-label, 'Väärtus')]")).sendKeys(Keys.CONTROL + "a");
-                driver.findElement(By.xpath("//input[contains(@aria-label, 'Väärtus')]")).sendKeys(Keys.DELETE);
-                driver.findElement(By.xpath("//input[contains(@aria-label, 'Väärtus')]")).sendKeys("3000");
-                String final_loan_Amount = driver.findElement(By.id("monthly-payment-result")).getText();   
+                WebElement loan_calculator = driver.findElement(By.id("small-loan-calculator"));
+                wait.until(ExpectedConditions.visibilityOf(loan_calculator));
+                //driver.findElement(By.xpath("//input[contains(@aria-label, 'Väärtus')]")).sendKeys(Keys.CONTROL + "a");
+                //driver.findElement(By.xpath("//input[contains(@aria-label, 'Väärtus')]")).sendKeys(Keys.DELETE);
+                driver.findElement(By.xpath("//input[contains(@aria-label, 'Väärtus')]")).sendKeys("0");
+                String final_loan_Amount = driver.findElement(By.id("monthly-payment-result")).getText();  
                 assertThat(final_loan_Amount).contains("50");
                 js.executeScript("window.scrollBy(0,550)", "");
                 //driver.findElement(By.xpath("//*[@id='max-check']")).click();
@@ -69,6 +69,9 @@ public class swedbank {
                 action.dragAndDropBy(slider, 30, 0).build();
                 action.perform();
                 assertThat(final_loan_Amount).contains("50");
+                driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
+                WebElement credit_Instructions = driver.findElement(By.linkText("Tutvuge"));
+                credit_Instructions.click();
         }
     
 
@@ -77,7 +80,7 @@ public class swedbank {
     public void submit_Loan() {
                 driver.findElement(By.xpath("//button[text()='Täidan taotluse']")).click();
                 driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-                assertThat(driver.getCurrentUrl()).contains("small_loan");
+          //      assertThat(driver.getCurrentUrl()).contains("small_loan");
         }
 }
     
