@@ -1,7 +1,6 @@
-# Käsud testide käivitamiseks
+# Käsk testide käivitamiseks
 
-1. `gradle clean install`
-2. `gradle build test`
+ `gradle build test`
 
 
 
